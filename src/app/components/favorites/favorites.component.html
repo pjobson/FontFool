@@ -1,0 +1,8 @@
+<div class="favs">
+  <h1>Favorites</h1>
+  <ul>
+    <li *ngFor="let font of fonts">
+      <a href="/#{{font.md5}}">{{ font.name }}</a>
+    </li>
+  </ul>
+</div>

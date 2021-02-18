@@ -1,0 +1,105 @@
+div#afont {
+  margin-bottom: 10px;
+}
+
+strong {
+  font-weight: bold;
+}
+
+table.metadata {
+  width: 60%;
+}
+
+table.metadata th, table.metadata tr, table.metadata td {
+  padding: 2px;
+}
+
+table.metadata th {
+  text-align: left;
+  font-weight: bold;
+  padding-right: 10px;
+}
+
+table.metadata tr:first-child {
+  background: black;
+  color: white;
+}
+
+table.metadata tr:nth-child(2n+2) {
+  background-color: gainsboro;
+}
+
+textarea {
+  border: 0;
+  width: 100%;
+}
+
+div.chrset {
+  display: grid;
+  grid-template-columns: [col0] 10% [col1] 10% [col2] 10% [col3] 10% [col4] 10% [col5] 10% [col6] 10% [col7] 10% [col8] 10% [col9] 10% [colend];
+}
+
+div.cChr {
+  font-size: 1.5em;
+}
+
+div.cNum, div.cName {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 0.75em;
+}
+
+div.lttr {
+  text-align: center;
+  border: 1px solid silver;
+}
+
+div.lttr0 {
+  grid-column-start: col0;
+  grid-column-end: col1;
+}
+
+div.lttr1 {
+  grid-column-start: col1;
+  grid-column-end: col2;
+}
+
+div.lttr2 {
+  grid-column-start: col2;
+  grid-column-end: col3;
+}
+
+div.lttr3 {
+  grid-column-start: col3;
+  grid-column-end: col4;
+}
+
+div.lttr4 {
+  grid-column-start: col4;
+  grid-column-end: col5;
+}
+
+div.lttr5 {
+  grid-column-start: col5;
+  grid-column-end: col6;
+}
+
+div.lttr6 {
+  grid-column-start: col6;
+  grid-column-end: col7;
+}
+
+div.lttr7 {
+  grid-column-start: col7;
+  grid-column-end: col8;
+}
+
+div.lttr8 {
+  grid-column-start: col8;
+  grid-column-end: col9;
+}
+
+div.lttr9 {
+  grid-column-start: col9;
+  grid-column-end: colend;
+}
+
