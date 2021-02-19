@@ -1,0 +1,90 @@
+Convert font file to ttx
+  ttx -d path_to_temp -t cmap font.ttf
+
+Open ttx file
+  strip out all comments
+  Find all <map code="0xf7" name="tilde"/>
+  sort by map.code & unique
+  remove any less than 0x20
+  convert to object:
+    hex = `map.code.replace(/^0x/,'')`
+    dec = parseInt(hex, 16);
+    name = map.name
+
+Scan Font
+  fc-scan font.ttf
+  replace /\(.+?\)/
+  split \n
+  style & stylelang
+    Convert stylelang to lang w/ lang.json
+      "Normal"    "ca"
+      "obyčejné"  "cs"
+      "Standard"  "de"
+      "Κανονικά"  "el"
+      "Regular"   "en"
+      "Normaali"  "fi"
+      "Normál"    "hu"
+      "Normale"   "it"
+      "Standaard" "nl"
+      "Normalny"  "pl"
+      "Обычный"   "ru"
+      "Navadno"   "sk"
+      "Arrunta"   "eu"
+
+
+Put ttx & fc info in db.
+  {
+    filename: filename,
+    md5: filename.match(/([0-9a-f]{32})\..../)
+    charhex: ttx.hex
+    chardec: ttx.dec
+    charname: ttx.name
+    family: fc.family
+    familylang: fc.famlylang
+    fullnamelang: fc.fullnamelang
+    slant: fc.slant
+    weight: fc.weight
+    width: fc.width
+    spacing: fc.spacing
+    foundry: fc.foundry
+    index: fc.index
+    outline: fc.outline
+    scalable: fc.scalable (boolean)
+    lang: fc.lang
+    fontversion: fc.fontversion
+    fontformat: fc.fontformat
+    decorative: fc.decorative
+    postscriptname: fc.postscriptname
+    color: fc.color (boolean)
+    symbol: fc.symbol (boolean)
+  }
+
+
+Loop through each of the <map> elements
+
+Render each character
+  use String.fromCharCode(parseInt(`${map.code.replace(/^0x/,'')}`, 16))
+
+If name==='space' use _ and set fill to white, then back to black
+
+Combine images into 8 cols by X rows.
+
+convert                    \
+  xc:white                 \
+  -background white        \
+  -bordercolor white       \
+  -fill black              \
+  -gravity center          \
+  -font "Courier New.ttf"  \
+  -pointsize 20            \
+   label:'exclam'          \
+  -font "Show-Regular.otf" \
+  -pointsize 100           \
+   label:"!"               \
+  -font "Courier New.ttf"  \
+  -pointsize 20            \
+   label:"!\n0021"         \
+  -append                  \
+  -border 10x0             \
+ 0x21.png && open 0x21.png
+

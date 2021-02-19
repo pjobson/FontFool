@@ -1,0 +1,15 @@
+#!/usr/bin/env fontforge
+# Use: fontforge -script convert.pe file.ext
+i=1
+format=".ttf"
+while ( i<$argc )
+  if ( $argv[i]=="-format" || $argv[i]=="--format" )
+    i=i+1
+    format = $argv[i]
+  else
+    Open($argv[i])
+    Generate($argv[i]:r + format)
+  endif
+  i = i+1
+endloop
+

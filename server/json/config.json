@@ -1,0 +1,6 @@
+{
+  "fcscan": "/usr/bin/fc-scan",
+  "fontforge": "/usr/bin/fontforge",
+  "ttx": "/usr/bin/ttx",
+  "fontpath": "/dvr/media/fonts/sorted"
+}

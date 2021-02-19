@@ -1,0 +1,21 @@
+#!/usr/bin/env fontforge
+# Usage: fontforge -script ttc2ttf.pe /path/to/font.ttc /pathout
+# Modified From: https://gist.github.com/fatum12/941a10f31ac1ad48ccbc
+
+fonts = FontsInFile($1)
+n = SizeOf(fonts)
+i = 0
+while (i < n)
+    Open($1 + "(" + fonts[i] + ")", 1)
+
+    ext = ".ttf"
+    if ($order == 3)
+        ext = ".otf"
+    endif
+
+    filename = $fontname + ext
+    Generate($2 + "/" + filename)
+    #Print($2 + "/" + filename)
+    Close()
+    ++i
+endloop
