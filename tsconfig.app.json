@@ -2,7 +2,7 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "baseUrl": "./src",
+    "baseUrl": "./client",
     "outDir": "./out-tsc/app",
     "types": [],
     "paths": {
@@ -14,10 +14,10 @@
     }
   },
   "files": [
-    "src/main.ts",
-    "src/polyfills.ts"
+    "client/main.ts",
+    "client/polyfills.ts"
   ],
   "include": [
-    "src/**/*.d.ts"
+    "client/**/*.d.ts"
   ]
 }
