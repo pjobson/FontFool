@@ -1,6 +1,6 @@
-const execSync = require('child_process').execSync;
-const fs       = require('fs-extra');
-const path     = require('path');
+const execSync = require('child_process').execSync; // https://nodejs.org/api/child_process.html
+const fs       = require('fs-extra');               // https://www.npmjs.com/package/fs-extra
+const path     = require('path');                   // https://nodejs.org/docs/latest/api/path.html
 
 /*
  * Normalizes the font-config Data
@@ -8,17 +8,15 @@ const path     = require('path');
  */
 exports.get = async (thisFont, fcscan) => {
 	// console.log(`FC-Scan: ${thisFont}`);
-	const langjson = fs.readJsonSync(`${path.resolve('.')}/json/FontLanguages.json`);
+	const langjson = await fs.readJsonSync(path.resolve(`${__dirname}/../json/FontLanguages.json`));
 	return new Promise(async (resolve, reject) => {
 		const tmp = {};
 		const out = {};
 		// escape dollar signs
 		thisFont = thisFont.replace(/\$/,"\\\$");
 		const fcCmd  = `${fcscan} -b "${thisFont}"`;
-
 		try {
 			let fcData = await execSync(fcCmd).toString();
-
 			fcData
 				.replace(/\(.+?\)/g,'')
 				.replace(/\t/g,'')
@@ -59,9 +57,9 @@ exports.get = async (thisFont, fcscan) => {
 			out.languages      = out.languages.map( lang => langjson[lang] ? `${langjson[lang]} [${lang}]` : `Unknown [${lang}]` );
 			out.languages.sort();
 
-			out.style = {};
-			out.family = {};
-			out.fullname = {};
+			out.style = [];
+			out.family = [];
+			out.fullname = [];
 
 			// fix malformed tmp.family
 			tmp.family = tmp.family || '"';
@@ -89,17 +87,26 @@ exports.get = async (thisFont, fcscan) => {
 
 			styleArr.forEach((style, idx) => {
 				const langIdx = stylelangArr[idx] ? stylelangArr[idx] : stylelangArr[0];
-				out.style[langjson[langIdx.replace(/"/g,'')]] = style.replace(/"/g,'');
+				out.style.push({
+					lang: langjson[langIdx.replace(/"/g,'')],
+					style: style.replace(/"/g,'')
+				});
 			});
 
 			familyArr.forEach((family, idx) => {
 				const langIdx = familylangArr[idx] ? familylangArr[idx] : familylangArr[0];
-				out.family[langjson[langIdx.replace(/"/g,'')]] = family.replace(/"/g,'');
+				out.family.push({
+					lang: langjson[langIdx.replace(/"/g,'')],
+					family: family.replace(/"/g,'')
+				});
 			});
 
 			fullnameArr.forEach((fullname, idx) => {
 				const langIdx = familylangArr[idx] ? familylangArr[idx] : familylangArr[0];
-				out.fullname[langjson[langIdx.replace(/"/g,'')]] = fullname.replace(/"/g,'');
+				out.fullname.push({
+					lang: langjson[langIdx.replace(/"/g,'')],
+					fullname: fullname.replace(/"/g,'')
+				});
 			});
 
 			resolve(out);

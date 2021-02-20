@@ -11,17 +11,19 @@
 /*
  * CORE NODE MODULES
  */
-const process  = require('process');                // https://nodejs.org/api/process.html
-const path     = require('path');                   // https://nodejs.org/api/path.html
-const os       = require('os');                     // https://nodejs.org/api/os.html
+const process = require('process'); // https://nodejs.org/api/process.html
+const path    = require('path');    // https://nodejs.org/api/path.html
+const os      = require('os');      // https://nodejs.org/api/os.html
 
 /*
  * EXTERNAL MODULES
  */
-const minimist   = require('minimist'); // https://www.npmjs.com/package/minimist
-const fs         = require('fs-extra'); // https://github.com/jprichardson/node-fs-extra
-const mkdirp     = require('mkdirp');   // https://www.npmjs.com/package/mkdirp
-const rimraf     = require('rimraf');   // https://www.npmjs.com/package/rimraf
+const minimist = require('minimist'); // https://www.npmjs.com/package/minimist
+const fs       = require('fs-extra'); // https://github.com/jprichardson/node-fs-extra
+const mkdirp   = require('mkdirp');   // https://www.npmjs.com/package/mkdirp
+const rimraf   = require('rimraf');   // https://www.npmjs.com/package/rimraf
+const Agenda   = require('agenda');   // https://github.com/agenda/agenda#multiple-job-processors
+
 
 /*
  * INTERNAL MODULES
@@ -57,6 +59,10 @@ const $DB               = new Database();
 
 /* --------------------------------------------------- */
 
+/**
+ * Initializes the fool
+ * @function
+ */
 const foolInit = async () => {
 	// setup globals
 	const argv = minimist(process.argv.slice(2))
@@ -109,39 +115,77 @@ const foolInit = async () => {
 
 };
 
+
+/*
+ * Single instance of the font processor
+ */
 const queueUp = () => {
-	const font = $fontList.pop();
 	return new Promise(async (resolve) => {
+		const font = $fontList.pop();
+console.log('-----------------', font);
 		if (!font) {
 			resolve();
-		} else {
-			console.log(`Starting ${font}.`);
-			const PF = new ProcessFont(
-				$DB,
-				$paths,
-				$programs,
-				font,
-				$moveFiles,
-				false
-			);
-			await PF.process();
-			console.log(`Done ${font}.`)
-			resolve();
-			jobList.push(queueUp());
 		}
+		const PF = new ProcessFont(
+			$DB,
+			$paths,
+			$programs,
+			font,
+			$moveFiles,
+			false
+		);
+		await PF.process();
+		resolve();
 	});
 }
 
+/*
+ * Instantiates the queue
+ */
 const processFonts = async () => {
 	return new Promise(async (resolve) => {
-		// Queue Up as many fonts as requested in $queue
-		[...Array($queue)].forEach(() => {
-			jobList.push(queueUp());
-		});
-		while(completedPromises.length != jobList.length) {
-			completedPromises = await Promise.allSettled(jobList);
+		if ($fontList.length === 0) {
+			resolve();
 		}
-		resolve();
+		// instantiate a new agenda
+		const agenda = new Agenda({
+			db: { address: "mongodb://127.0.0.1/fontfool" },
+			maxConcurrency: $queue,
+			defaultConcurrency: 5
+		});
+		// define process_a_font
+		agenda.define(
+			"process_a_font",
+			{ priority: "high" },
+			async () => {
+				await queueUp();
+			}
+		);
+		// Run every 1 second
+		agenda.every("1 second");
+
+		agenda.on("complete", async () => {
+			// look for unfinished jobs
+			const jobs = await agenda.jobs(
+				{ name: "process_a_font", lastFinishedAt: { $exists: false } }
+			);
+
+			console.log(`${jobs.length} Remaining Jobs`)
+
+			// If there are no unfinished job, we're done
+			if (jobs.length === 0) {
+				console.log('Queue Is Empty');
+				resolve();
+			}
+		});
+
+		// setup the queue
+		(async function () {
+			await agenda.start();
+			for (let i=0;i<$fontList.length;i++) {
+				await agenda.schedule("now", "process_a_font");
+			}
+		})();
 	});
 }
 

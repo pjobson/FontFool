@@ -58,12 +58,13 @@ class Database {
 
 	addFont = async (fontData) => {
 		return new Promise(async (resolve, reject) => {
+			await this.addIndex(fontData);
 			const fontCollection = this.db.collection('fonts');
 			// check to see if this font is already in collection
 			const docs = await this.findIndex(fontData.md5sum, fontCollection);
 			// if not indexed insert it
 			if (!docs) {
-				fontCollection.insertOne(fontData, (err, result) => {
+				await fontCollection.insertOne(fontData, (err, result) => {
 					if (err) {
 						console.log('addFont method failed', err);
 						process.exit(0);
@@ -86,17 +87,22 @@ class Database {
 		});
 	};
 
-	addIndex = async ( md5, fontName ) => {
+	addIndex = async ( fontData ) => {
 		return new Promise(async (resolve, reject) => {
 			const indexCollection = this.db.collection('index');
 			// check to see if this font is already indexed
-			const docs = await this.findIndex(md5, indexCollection);
+			const docs = await this.findIndex(fontData.md5sum, indexCollection);
+
+			const fontIndex = {
+				hidden: false,
+				favorite: false,
+				md5sum: fontData.md5sum,
+				name: fontData.fontName,
+				size: fontData.size
+			};
 			// if not indexed insert it
 			if (!docs) {
-				indexCollection.insertOne({
-					md5sum: md5,
-					name: fontName
-				}, (err, result) => {
+				await indexCollection.insertOne(fontIndex, (err, result) => {
 					if (err) {
 						console.log('addFont method failed', err);
 						process.exit(0);

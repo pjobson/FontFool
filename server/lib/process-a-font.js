@@ -96,7 +96,12 @@ class ProcessFont {
 
 					// other general info
 					// set tempname to the FC-Scan fullname
-					const originalName = fcMD.fullname.English || fcMD.fullname[Object.keys(fcMD.fullname).shift()];
+					let originalName;
+					try {
+						originalName = fcMD.fullname.find(fullname => fullname.lang === 'English').fullname;
+					} catch (er) {
+						originalName = fcMD.fullname[0].fullname;
+					}
 
 					// Sanitized File Name
 					if (this.debug) { console.log(`SANITIZE`) }
@@ -172,10 +177,6 @@ class ProcessFont {
 					// add font to the font collection
 					if (this.debug) { console.log(`DB FONT`) }
 					await this.$DB.addFont(fontData);
-					// add font name to index collection
-					if (this.debug) { console.log(`DB INDEX`) }
-					await this.$DB.addIndex(fontData.md5sum, fontData.fontName);
-
 			} catch (err) {
 				await ShowWarning(this.$DB, err, '', this.font, false);
 			} finally {

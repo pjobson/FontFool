@@ -10,7 +10,10 @@ exports.get = async (thisFont, mimetype) => {
 		// escape dollar signs
 		thisFont = thisFont.replace(/\$/,"\\\$");
 		const mimeExec = `${mimetype} "${thisFont}"`;
-		const mimeData = await execSync(mimeExec).toString();
-		resolve({ mimeType: mimeData.split(':')[1].trim() });
+		let mimeData = await execSync(mimeExec).toString();
+		    mimeData = mimeData.split(':')[1].trim();
+		    // for some reason OTF reports as this
+		    mimeData = mimeData.replace(/.+vnd.oasis.opendocument.formula-template/,'font/otf');
+		resolve({ mimeType: mimeData });
 	});
 };

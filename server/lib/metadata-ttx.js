@@ -19,7 +19,7 @@ exports.get = async (md5sum, thisFont, paths, ttx) => {
 				reject(ttxResult.stderr.toString());
 			}
 
-			const out = {};
+			const out = [];
 			fs
 				.readFileSync(`${thisTTX}`)
 				.toString()
@@ -35,7 +35,7 @@ exports.get = async (md5sum, thisFont, paths, ttx) => {
 
 					// ignore control characters
 					if (dec >= 32) {
-						out[dec] = { dec: dec, hex: hex, name: name };
+						out.push({ dec: dec, hex: hex, name: name });
 					}
 				});
 			resolve([out, thisTTX]);
