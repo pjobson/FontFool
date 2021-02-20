@@ -1,0 +1,10 @@
+<div class="container">
+  <header class="header"></header>
+  <settings class="settings"></settings>
+  <favorites class="favorites"></favorites>
+  <div class="content">
+    <fontlist *ngIf="!hashRef"></fontlist>
+    <afont *ngIf="hashRef" [md5sum]="hashRef"></afont>
+  </div>
+  <footer class="footer"></footer>
+</div>

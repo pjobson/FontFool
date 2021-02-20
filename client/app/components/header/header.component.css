@@ -1,0 +1,12 @@
+h1 {
+  font-family: "Courier New", Courier, Fixed;
+  font-weight: bold;
+  font-size: 3em;
+  margin-top: 10px;
+  color: white;
+}
+
+a {
+  color: white;
+  text-decoration: none;
+}
