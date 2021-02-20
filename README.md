@@ -1,6 +1,10 @@
-# FontFool Lister
+# FontFool
 
-Demo font lister for the [Font-Organizer](https://github.com/pjobson/Font-Organizer) I'm working on.
+Font indexing and organization.
+
+## WORK IN PROGRESS
+
+This is a pre-release demo which is not fully connected between CLI->API->Angular.
 
 Currently this only loads/displays Bitstream Vera Sans Mono.
 
@@ -24,10 +28,10 @@ Using:
 * Angular CLI: 10.2.1
 * Node: 15.6.0
 
-      git clone git@github.com:pjobson/fontviewer_demo.git
-      cd fontviewer_demo
+      git clone git@github.com:pjobson/FontFool.git
+      cd FontFool
 
-I use autoenv, if you don't, do:
+I use `autoenv`, if you don't, do:
 
       source .env
 
@@ -35,7 +39,6 @@ Install and serve
 
       npm install
       ng serve
-
 
 
 Open: http://localhost:4200/
