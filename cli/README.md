@@ -1,9 +1,6 @@
 # Font Organizer
 
-The Font Organizer currently consists of two tools:
-
-* fontOrganizer.js - Organizes fonts moving or copying them to a sorted directory using a standard naming convention.
-* fontIndexer.js - A program which scans a directory of sorted fonts and creates an index.
+Font organizer organizes and indexes fonts on your file system.
 
 ## Goals
 
@@ -13,7 +10,7 @@ The Font Organizer currently consists of two tools:
 * Create an index of fonts with their metadata.
 * Create basic contact sheets for fonts.
 * Convert PFB and FON files to TTF
-* Extract [TTC (TrueType Collection)](https://en.wikipedia.org/wiki/TrueType#TrueType_Collection) and index their contents.
+* Extract dfont and [TTC (TrueType Collection)](https://en.wikipedia.org/wiki/TrueType#TrueType_Collection) and index their contents.
 
 A huge problem with massive archives of fonts is duplication
 of files, this script attempts to reduce duplication by use
@@ -57,7 +54,7 @@ retain the fonts in the original path, do not do this.
 
 ## Use
 
-    node fontOrganizer.js --in /path/to/unorganized_font_directory --out /path/to/organized_font_directory
+    node index.js --in /path/to/unorganized_font_directory --out /path/to/organized_font_directory
 
 Organizes fonts by as such:
 
@@ -68,9 +65,6 @@ Organizes fonts by as such:
 
 For Example: `/path/to/out/A/AR/Arial - 05ada5bd099c819f28fbe4a1de2f0a61.ttf`
 
-### fontIndexer.js
-
-
 ### Required Programs
 
 * fc-scan  - Part of [fontconfig](https://www.freedesktop.org/wiki/Software/fontconfig/) should be installed by default in your distro.
@@ -79,8 +73,4 @@ For Example: `/path/to/out/A/AR/Arial - 05ada5bd099c819f28fbe4a1de2f0a61.ttf`
 * file     - Should be installed by default with your distro.
 * mimetype - Should be installed by default with your distro.
 * md5sum   - Should be installed by default with your distro.
-* ImageMagick - You'll need at least [Version 7](https://imagemagick.org/script/download.php).
-    * convert
-    * identify
-* optipng  - [OptiPNG](http://optipng.sourceforge.net/): Advanced PNG Optimizer
 
