@@ -4,11 +4,13 @@ const { FindFiles } = require('./find-files');
 /*
  * Converts FON and PFB files
  */
-exports.ConvertFonts = async (doConvert, pathIn, fontforge, ffScriptPath) => {
+exports.ConvertFonts = async (doConvert, pathIn, fontforge, DB, ffScriptPath) => {
 	if (!doConvert) { return }
+
+	// Find *.fon / *.pfb
+	const convFiles = await FindFiles(pathIn, /\.(fon|pfb)$/i);
+
 	return new Promise(async resolve => {
-		// Find *.fon / *.pfb
-		const convFiles = await FindFiles(pathIn, /\.(fon|pfb)$/i);
 		// loop the files
 		for (let i=0;i<convFiles.length;i++) {
 			const convFile = convFiles[i];
@@ -17,7 +19,13 @@ exports.ConvertFonts = async (doConvert, pathIn, fontforge, ffScriptPath) => {
 				const convertExec = `${fontforge} -script "${ffScriptPath}/convert.pe" "${convFile}"`;
 				await execSync(convertExec, { stdio: 'ignore' });
 			} catch(er) {
-				console.error(`Failed to convert: ${convFile}`);
+				DB.recordError({
+					errorMessage: '',
+					textMessage: 'Failed to convert font.',
+					font: convFile,
+					timestamp: Date.now()
+				})
+				// console.error(`Failed to convert: ${convFile}`);
 			}
 		}
 		resolve();

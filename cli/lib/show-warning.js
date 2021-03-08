@@ -10,7 +10,7 @@ exports.ShowWarning = async (dbConnection, errorMsg, textMsg, font, callback) =>
 	return new Promise(async (resolve) => {
 		console.warn(textMsg);
 		await dbConnection.recordError({
-			errorMessage: errorMsg,
+			errorMessage: (typeof errorMsg === 'string') ? errorMsg : JSON.stringify(errorMsg),
 			textMessage:  textMsg,
 			font:         font,
 			timestamp:    Date.now()

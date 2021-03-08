@@ -1,3 +1,5 @@
+const process = require('process');
+
 const manual = `
 ╔══════════════════════════════════════════════════════════╗
 ║ FONT FOOL                                                ║

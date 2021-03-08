@@ -48,7 +48,6 @@ let $convertFont        = false;
 let $fontList           = [];
 const $paths            = {};
 const $temp             = `${os.tmpdir()}/fontfool`;
-/* eslint-disable */
 const FontForgeScripts  = `${__dirname}/fontforge_scripts`;
 const $DB               = new Database();
 

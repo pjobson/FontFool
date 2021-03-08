@@ -8,6 +8,6 @@ exports.fix = ltrString => {
   // GRAVE ACCENT
   ltrString = /\u0060/.test(ltrString) ? `\\\`` : ltrString;
   // QUOTATION MARK
-  ltrString = /\u0022/.test(ltrString) ? `\\\"` : ltrString;
+  ltrString = /\u0022/.test(ltrString) ? `\\"` : ltrString;
   return ltrString;
 };

@@ -12,12 +12,13 @@ exports.ExtractTTC = async (doExtract, pathIn, fontforge, ffScriptPath) => {
 		// loop the files
 		for (let i=0;i<ttcFiles.length;i++) {
 			const ttcFile = ttcFiles[i];
-			console.log(`Attempting to extract: ${ttcFile}`);
+			// console.log(`Attempting to extract: ${ttcFile}`);
 			try {
 				// attempt to extract them
 				const extractExec = `${fontforge} -script "${ffScriptPath}/ttc2ttf.pe" "${ttcFile}" "${pathIn}"`;
 				await execSync(extractExec, { stdio: 'ignore' });
 			} catch (er) {
+				// TODO: move to db
 				console.error(`Failed to extract: ${ttcFile}`);
 			}
 		}

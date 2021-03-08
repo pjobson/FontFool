@@ -2,6 +2,7 @@ const mongodb = require('mongodb');
 const MongoClient = mongodb.MongoClient;
 const { ShowWarning }  = require('./show-warning');
 
+
 class Database {
 	/*
 	 * Standard Constructor is Standard
@@ -25,6 +26,10 @@ class Database {
 		});
 	}
 
+	close = () => {
+		this.client.close();
+	}
+
 	connectionEstablished = async () => {
 		return new Promise(async resolve => {
 			const interval = setInterval(() => {
@@ -36,24 +41,9 @@ class Database {
 		});
 	}
 
-	close = () => {
-		this.client.close();
-	}
-
 	recordError = async (messageObj) => {
 		const errColl = this.db.collection('errors');
 		errColl.insertOne(messageObj);
-	}
-
-	getFont = async (md5) => {
-		// this.client.get(md5, redis.print);
-		// return new Promise(async (resolve, reject) => {
-		// 	this.getAsync(md5).then((res) => {
-		// 		resolve(res);
-		// 	}).catch((err) => {
-		// 		reject(err);
-		// 	});
-		// });
 	}
 
 	addFont = async (fontData) => {
