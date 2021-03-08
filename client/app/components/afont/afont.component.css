@@ -36,6 +36,7 @@ table.metadata tr:nth-child(2n+2) {
 textarea {
   border: 1px solid silver;
   width: 95%;
+  overflow-y: scroll;
 }
 
 div.chrset {

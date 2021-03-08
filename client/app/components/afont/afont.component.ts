@@ -18,6 +18,7 @@ export class AFontComponent implements AfterViewInit {
   constructor(
     private FontsSVC: FontsService
   ) {
+    // I know I could have used backtick for this, I just like it the old way for no particular reason.
     this.defaultText  = "1234567890\n";
     this.defaultText += "!@#$%^&*()\n";
     this.defaultText += "Sphinx of black quartz, judge my vow.\n";
@@ -26,8 +27,7 @@ export class AFontComponent implements AfterViewInit {
     this.defaultText += "The quick onyx goblin jumps over the lazy dwarf.\n";
     this.defaultText += "Cwm fjord bank glyphs vext quiz.\n";
     this.defaultText += "How razorback-jumping frogs can level six piqued gymnasts!\n";
-    this.defaultText += "Cozy lummox gives smart squid who asks for job pen.\n";
-
+    this.defaultText += "Cozy lummox gives smart squid who asks for job pen.";
   }
 
   /**
@@ -50,6 +50,14 @@ export class AFontComponent implements AfterViewInit {
     }).catch((error) => {
       console.log(error)
     });
+  }
+
+  /**
+   * Text selecter.
+   * @function
+   */
+  selectText(ev) {
+    ev.target.select();
   }
 
 }

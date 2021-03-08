@@ -2,7 +2,10 @@
   <h1>{{ font.fontName }}</h1>
   <h2 [ngStyle]="{'font-family': font.faceName}">{{ font.fontName }}</h2>
   <marker [font]="font"></marker>
-  <textarea rows="5" [ngStyle]="{'font-family': font.faceName}" spellcheck="false">{{defaultText}}</textarea>
+  <textarea rows="5"
+            spellcheck="false"
+            (click)="selectText($event)"
+            [ngStyle]="{'font-family': font.faceName}">{{defaultText}}</textarea>
   <h2>System Paths</h2>
   <ul>
     <li><strong>Font: </strong>     <code>{{ font.paths.font }}</code>     </li>
@@ -31,6 +34,7 @@
     <tr><th>File Info</th><td>{{font.fileInfo}}</td></tr>
   </table>
   <h2>Reported Languages</h2>
+  <p>These are reported by the font as being supported, they may or may not actually be supported.</p>
   <p>
     <span *ngFor="let lang of font.languages; last as l">
       {{lang}}<i *ngIf="!l">, </i>
@@ -43,6 +47,7 @@
     </span>
   </p>
   <h2>Character Set</h2>
+  <p>These are characters reported by the font as included, if some do not display they are either incompatible with the browser or are not actually included.</p>
   <div class="chrset" *ngFor="let row of blockArray; index as i">
     <div *ngFor="let n of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]"
          [ngClass]="['lttr', 'lttr'+n]">
