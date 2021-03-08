@@ -35,7 +35,6 @@ const { RTFM }         = require('./lib/RTFM');
 const { ExtractTTC }   = require('./lib/extract-ttc');
 const { ConvertFonts } = require('./lib/convert-fonts');
 const { FindFonts }    = require('./lib/find-fonts');
-const { ShowWarning }  = require('./lib/show-warning');
 
 /*
  * GLOBALS
@@ -47,12 +46,9 @@ let $getHelp            = false;
 let $extractTTC         = false;
 let $convertFont        = false;
 let $fontList           = [];
-let jobList             = [];
-let completedPromises   = [];
-let $fontsLeftCount     = 0;
-let $fontsResolver      = null;
 const $paths            = {};
 const $temp             = `${os.tmpdir()}/fontfool`;
+/* eslint-disable */
 const FontForgeScripts  = `${__dirname}/fontforge_scripts`;
 const $DB               = new Database();
 
@@ -89,7 +85,7 @@ const foolInit = async () => {
 		// Extract TTC Files
 		ExtractTTC($extractTTC, $paths.in, $programs.fontforge, FontForgeScripts),
 		// Convert Files
-		ConvertFonts($convertFont, $paths.in, $programs.fontforge, FontForgeScripts)
+		ConvertFonts($convertFont, $paths.in, $programs.fontforge, $DB, FontForgeScripts)
 	]);
 
 	// finds all font files
@@ -122,10 +118,11 @@ const foolInit = async () => {
 const queueUp = () => {
 	return new Promise(async (resolve) => {
 		const font = $fontList.pop();
-console.log('-----------------', font);
+
 		if (!font) {
 			resolve();
 		}
+
 		const PF = new ProcessFont(
 			$DB,
 			$paths,
@@ -147,12 +144,14 @@ const processFonts = async () => {
 		if ($fontList.length === 0) {
 			resolve();
 		}
+
 		// instantiate a new agenda
 		const agenda = new Agenda({
 			db: { address: "mongodb://127.0.0.1/fontfool" },
 			maxConcurrency: $queue,
 			defaultConcurrency: 5
 		});
+
 		// define process_a_font
 		agenda.define(
 			"process_a_font",
@@ -221,13 +220,17 @@ const setupPaths = async () => {
 		Object.keys($paths).forEach(path => {
 			if (path === 'in') { return }
 			mkdirp.sync($paths[path], { mode: '0755' });
-			if (path === 'out' || path === 'temp') { return }
+			if (path === 'out' || path === 'temp') { return };
+
 			// Make all sub directories: A/AA, A/AB, A/AC, etc
+			// I'm sure there's a more graceful way of doing this, though
+			// I rarely write these nested for loops so I'll keep it this way
 			for (let i=0;i<27;i++) {
-				const fc = (i<26) ? String.fromCharCode(65+i) : '#';
+				const firstChr = (i<26) ? String.fromCharCode(65+i) : '#';
 				for (let j=0;j<27;j++) {
-					const sc = (j<26) ? String.fromCharCode(65+j) : '#';
-					const sub = `${$paths[path]}/${fc}/${fc}${sc}`;
+					const secondChr = (j<26) ? String.fromCharCode(65+j) : '#';
+					const sub = `${$paths[path]}/${firstChr}/${firstChr}${secondChr}`;
+					// these are synchronous, but they go super fast
 					mkdirp.sync(sub, { mode: '0755' })
 				}
 			}
