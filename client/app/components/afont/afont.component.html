@@ -5,9 +5,9 @@
   <textarea rows="5" [ngStyle]="{'font-family': font.faceName}" spellcheck="false">{{defaultText}}</textarea>
   <h2>System Paths</h2>
   <ul>
-    <li><strong>Font: </strong> <a href="#">{{ font.paths.font }}</a></li>
-    <li><strong>Metadata: </strong> <a href="#">{{ font.paths.metadata }}</a></li>
-    <li><strong>Woff: </strong> <a href="#">{{ font.paths.woff }}</a></li>
+    <li><strong>Font: </strong>     <code>{{ font.paths.font }}</code>     </li>
+    <li><strong>Metadata: </strong> <code>{{ font.paths.metadata }}</code> </li>
+    <li><strong>Woff: </strong>     <code>{{ font.paths.woff }}</code>     </li>
   </ul>
   <h2>MetaData</h2>
   <table class="metadata">
@@ -46,11 +46,9 @@
   <div class="chrset" *ngFor="let row of blockArray; index as i">
     <div *ngFor="let n of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]"
          [ngClass]="['lttr', 'lttr'+n]">
-      <div *ngIf="font.charset[(i*10)+n]" class="cNum">%{{ font.charset[(i*10)+n].dec }} | &amp;#{{ font.charset[(i*10)+n].hex }};</div>
+      <div *ngIf="font.charset[(i*10)+n]" class="cNum">%{{ font.charset[(i*10)+n].dec }}&nbsp;|&nbsp;&amp;#{{ font.charset[(i*10)+n].hex }};</div>
       <div *ngIf="font.charset[(i*10)+n]" class="cChr" [ngStyle]="{'font-family': font.faceName}">{{ font.charset[(i*10)+n].dec | dec2chr }}</div>
       <div *ngIf="font.charset[(i*10)+n]" class="cName">{{ font.charset[(i*10)+n].name }}</div>
     </div>
   </div>
-
 </div>
-

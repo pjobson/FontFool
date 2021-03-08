@@ -2,6 +2,10 @@ div#afont {
   margin-bottom: 10px;
 }
 
+code {
+  font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
+}
+
 strong {
   font-weight: bold;
 }
@@ -30,8 +34,8 @@ table.metadata tr:nth-child(2n+2) {
 }
 
 textarea {
-  border: 0;
-  width: 100%;
+  border: 1px solid silver;
+  width: 95%;
 }
 
 div.chrset {
@@ -45,7 +49,7 @@ div.cChr {
 
 div.cNum, div.cName {
   font-family: "Courier New", Courier, monospace;
-  font-size: 0.75em;
+  font-size: 0.65em;
 }
 
 div.lttr {

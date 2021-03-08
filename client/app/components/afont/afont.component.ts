@@ -18,7 +18,16 @@ export class AFontComponent implements AfterViewInit {
   constructor(
     private FontsSVC: FontsService
   ) {
-    this.defaultText = "1234567890\n!@#$%^&*()\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque neque tortor, viverra id urna vitae, accumsan egestas enim. In ornare mattis posuere. Interdum et malesuada fames ac ante ipsum primis in faucibus. Suspendisse dignissim arcu justo, egestas faucibus urna bibendum non. Phasellus nisl lacus, aliquet a lorem eu, interdum pulvinar libero. Duis pharetra augue eget augue vestibulum dignissim. Nulla egestas commodo metus. Aliquam ac leo et augue mollis sollicitudin. Vestibulum ut ante nec diam porttitor euismod non nec nunc. Duis blandit pretium lacus nec rutrum. Sed condimentum pretium odio ac dignissim. Pellentesque pulvinar mi at elit mollis euismod. Maecenas eget placerat ipsum, in scelerisque lorem. Donec elementum urna id velit dapibus porta. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Sed ultrices sagittis nibh vel venenatis.";
+    this.defaultText  = "1234567890\n";
+    this.defaultText += "!@#$%^&*()\n";
+    this.defaultText += "Sphinx of black quartz, judge my vow.\n";
+    this.defaultText += "Jackdaws love my big sphinx of quartz.\n";
+    this.defaultText += "Pack my box with five dozen liquor jugs.\n";
+    this.defaultText += "The quick onyx goblin jumps over the lazy dwarf.\n";
+    this.defaultText += "Cwm fjord bank glyphs vext quiz.\n";
+    this.defaultText += "How razorback-jumping frogs can level six piqued gymnasts!\n";
+    this.defaultText += "Cozy lummox gives smart squid who asks for job pen.\n";
+
   }
 
   /**
